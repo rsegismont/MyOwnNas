@@ -9,11 +9,11 @@ import jcifs.smb.SmbFile;
 public class SmbFileEvent {
 
     public String url;
-    public SmbFile file;
+    public SmbFile[] smbFiles;
 
-    public SmbFileEvent(String url,SmbFile file){
+    public SmbFileEvent(String url,SmbFile[] file){
         this.url = url;
-        this.file = file;
+        this.smbFiles = file;
     }
 
 

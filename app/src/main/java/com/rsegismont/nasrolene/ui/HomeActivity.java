@@ -15,9 +15,11 @@ import android.view.MenuItem;
 
 import com.rsegismont.nasrolene.R;
 import com.rsegismont.nasrolene.back.eventbus.BusProvider;
-import com.rsegismont.nasrolene.back.smb.SmbAuthentication;
+import com.rsegismont.nasrolene.back.eventbus.events.SmbFileEvent;
+import com.rsegismont.nasrolene.back.smb.SmbTaskManager;
 import com.rsegismont.nasrolene.fileexplorer.FileExplorerFragment;
 import com.rsegismont.nasrolene.ui.home.HomeFragment;
+import com.squareup.otto.Subscribe;
 
 import jcifs.smb.SmbFile;
 
@@ -54,25 +56,10 @@ public class HomeActivity extends AppCompatActivity
         ft.replace(R.id.home_content,new HomeFragment());
         ft.commit();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
+        String url = "smb://mafreebox.freebox.fr/Disque dur/";
+        SmbTaskManager.getInstance().listSmbFiles(url);
 
 
-                    String url = "smb://mafreebox.freebox.fr/Disque dur/";
-                    SmbFile sfile = new SmbFile(url, SmbAuthentication.getInstance().getAuthToken());
-
-
-
-                    for(SmbFile file : sfile.listFiles()) {
-                        Log.e("Nas",file.getName());
-                    }
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }).start();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -83,6 +70,15 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Subscribe
+    public void answerAvailable(SmbFileEvent event) {
+
+            for (SmbFile file : event.smbFiles) {
+                Log.e("Nas", file.getName());
+            }
+
     }
 
     @Override

@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.rsegismont.nasrolene.R;
 import com.rsegismont.nasrolene.fileexplorer.FileExplorerFragment;
@@ -48,7 +47,7 @@ public class Presenter implements LoaderManager.LoaderCallbacks<List<SmbFile>> {
     }
 
     private void init() {
-        //Instantiate and configure the file adapter with an empty list that our loader will update..
+        //Instantiate and configure the smbFiles adapter with an empty list that our loader will update..
         mFileArrayAdapter = new FileArrayAdapter(mView.getActivity(),
                 R.layout.list_row, mData);
 
@@ -74,7 +73,7 @@ public class Presenter implements LoaderManager.LoaderCallbacks<List<SmbFile>> {
     }
 
     public void listItemClicked(ListView l, View v, int position, long id) throws SmbException {
-        //The file we clicked based on row position where we clicked.  I could probably word that better. :)
+        //The smbFiles we clicked based on row position where we clicked.  I could probably word that better. :)
         final SmbFile fileClicked = mFileArrayAdapter.getItem(position);
 
 
@@ -88,11 +87,10 @@ public class Presenter implements LoaderManager.LoaderCallbacks<List<SmbFile>> {
 
                         //Let the loader know that our content has changed and we need a new load.
                         if (mFileLoader.isStarted()) {
-                            Log.e("debug","start"+fileClicked.getCanonicalPath());
                             mView.getActivity().getLoaderManager().restartLoader(0, null, Presenter.this);
                             mFileLoader.forceLoad();
                         }
-                    } else { //Otherwise, we have clicked a file, so attempt to open it.
+                    } else { //Otherwise, we have clicked a smbFiles, so attempt to open it.
                         //TODO : ouvrir fichier
                         openFile(Uri.fromFile(new File(fileClicked.getPath())));
                     }

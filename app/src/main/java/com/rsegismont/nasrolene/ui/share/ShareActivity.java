@@ -87,7 +87,7 @@ public class ShareActivity extends AppCompatActivity {
         Cursor cursor = context.getContentResolver().query(contentUri, null,
                 null, null, null);
 
-        if (cursor == null) { // Source is Dropbox or other similar local file
+        if (cursor == null) { // Source is Dropbox or other similar local smbFiles
             // path
             result = contentUri.getPath();
         } else {

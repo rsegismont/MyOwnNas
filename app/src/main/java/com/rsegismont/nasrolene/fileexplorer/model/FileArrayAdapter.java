@@ -24,7 +24,7 @@ import jcifs.smb.SmbFile;
  */
 public class FileArrayAdapter extends ArrayAdapter<SmbFile> {
     private Context mContext; //Activity context.
-    private int mResource; //Represents the list_rowl file (our rows) as an int e.g. R.layout.list_row
+    private int mResource; //Represents the list_rowl smbFiles (our rows) as an int e.g. R.layout.list_row
     private List<SmbFile> mObjects; //The List of objects we got from our model.
 
     public FileArrayAdapter(Context c, int res, List<SmbFile> o) {
@@ -42,14 +42,14 @@ public class FileArrayAdapter extends ArrayAdapter<SmbFile> {
 
     /*Does exactly what it looks like.  Pulls out a specific File Object at a specified index.
     Remember that our FileArrayAdapter contains a list of Files it gets from our model's getAllFiles(),
-    so getitem(0) is the first file in that List, getItem(1), the second, etc.  ListView uses this
+    so getitem(0) is the first smbFiles in that List, getItem(1), the second, etc.  ListView uses this
     method internally.*/
     @Override
     public SmbFile getItem(int i) {
         return mObjects.get(i);
     }
 
-    /** Allows me to pull out specific views from the row xml file for the ListView.   I can then
+    /** Allows me to pull out specific views from the row xml smbFiles for the ListView.   I can then
     *make any modifications I want to the ImageView and TextViews inside it.
     *@param position - The position of an item in the List received from my model.
     *@param convertView - list_row.xml as a View object.
@@ -57,7 +57,7 @@ public class FileArrayAdapter extends ArrayAdapter<SmbFile> {
     ***/
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        /*This is the entire file [list_rowl] with its RelativeLayout, ImageView, and two
+        /*This is the entire smbFiles [list_rowl] with its RelativeLayout, ImageView, and two
         TextViews.  It will always be null the very first time, so we need to inflate it with a
            LayoutInflater.*/
         View v = convertView;
@@ -77,7 +77,7 @@ public class FileArrayAdapter extends ArrayAdapter<SmbFile> {
 
         SmbFile file = getItem(position);
 
-        /* If the file is a dir, set the image view's image to a folder, else, a file. */
+        /* If the smbFiles is a dir, set the image view's image to a folder, else, a smbFiles. */
         try {
             if (file.isDirectory()) {
                 iv.setImageResource(R.drawable.folderxxhdpi);
@@ -91,7 +91,7 @@ public class FileArrayAdapter extends ArrayAdapter<SmbFile> {
             e.printStackTrace();
         }
 
-        //Finally, set the name of the file or directory.
+        //Finally, set the name of the smbFiles or directory.
         nameView.setText(file.getName());
 
         //Send the view back so the ListView can show it as a row, the way we modified it.

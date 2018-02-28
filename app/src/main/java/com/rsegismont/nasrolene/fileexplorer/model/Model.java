@@ -88,7 +88,7 @@ public class Model {
         return dirs;
     }
     
-    //Try to determine the mime type of a file based on extension.
+    //Try to determine the mime type of a smbFiles based on extension.
     public String getMimeType(Uri uri) {
         String mimeType = null;
         Log.e("DEBUG","uri"+uri.getPath());
