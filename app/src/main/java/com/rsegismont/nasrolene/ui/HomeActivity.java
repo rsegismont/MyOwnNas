@@ -1,6 +1,5 @@
 package com.rsegismont.nasrolene.ui;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -25,7 +24,9 @@ import jcifs.smb.SmbFile;
 
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,HomeFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
+
+    private int mCurrentId;
 
     @Override
     protected void onDestroy() {
@@ -117,18 +118,18 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        mCurrentId = item.getItemId();
 
-       if (id == R.id.nav_gallery) {
+       if (mCurrentId == R.id.nav_gallery) {
 
         }
-       else if (id == R.id.nav_files) {
+       else if (mCurrentId == R.id.nav_files) {
            final FragmentTransaction fg = getSupportFragmentManager().beginTransaction();
            fg.replace(R.id.home_content,new FileExplorerFragment());
            fg.commit();
        }
 
-        else if (id == R.id.nav_share) {
+        else if (mCurrentId == R.id.nav_share) {
 
         }
 
@@ -137,8 +138,4 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 }

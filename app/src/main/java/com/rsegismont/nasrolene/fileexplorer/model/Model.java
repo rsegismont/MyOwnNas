@@ -4,12 +4,13 @@ import android.net.Uri;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
+import com.rsegismont.nasrolene.back.smb.SmbAuthentication;
+
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 
@@ -102,14 +103,10 @@ public class Model {
     }
 
     public void setupCurrentDir() {
-        String user = "Guest";
-        String pass ="";
 
         String url = "smb://mafreebox.freebox.fr/Disque dur/";
-        NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(
-                "", user, pass);
         try {
-            mCurrentDir = new SmbFile(url, auth);
+            mCurrentDir = new SmbFile(url, SmbAuthentication.getInstance().getAuthToken());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
