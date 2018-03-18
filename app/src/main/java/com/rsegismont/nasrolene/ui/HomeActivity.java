@@ -15,8 +15,6 @@ import android.view.MenuItem;
 import com.rsegismont.nasrolene.R;
 import com.rsegismont.nasrolene.back.eventbus.BusProvider;
 import com.rsegismont.nasrolene.back.eventbus.events.SmbFileEvent;
-import com.rsegismont.nasrolene.back.smb.SmbTaskManager;
-import com.rsegismont.nasrolene.fileexplorer.FileExplorerFragment;
 import com.rsegismont.nasrolene.ui.home.HomeFragment;
 import com.squareup.otto.Subscribe;
 
@@ -58,7 +56,7 @@ public class HomeActivity extends AppCompatActivity
         ft.commit();
 
         String url = "smb://mafreebox.freebox.fr/Disque dur/";
-        SmbTaskManager.getInstance().listSmbFiles(url);
+      //  SmbTaskManager.getInstance().listSmbFiles(url);
 
 
 
@@ -124,9 +122,7 @@ public class HomeActivity extends AppCompatActivity
 
         }
        else if (mCurrentId == R.id.nav_files) {
-           final FragmentTransaction fg = getSupportFragmentManager().beginTransaction();
-           fg.replace(R.id.home_content,new FileExplorerFragment());
-           fg.commit();
+
        }
 
         else if (mCurrentId == R.id.nav_share) {

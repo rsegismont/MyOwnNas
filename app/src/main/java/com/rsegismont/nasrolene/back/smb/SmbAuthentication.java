@@ -6,7 +6,7 @@ import jcifs.smb.NtlmPasswordAuthentication;
  * Created by Rolène on 04/02/2018.
  */
 
-public class SmbAuthentication {
+public class SmbAuthentication implements  SmbAuthSkeleton {
 
     private static SmbAuthentication instance = null;
     private final String mUser,mPassword,mDomain;
@@ -39,5 +39,15 @@ public class SmbAuthentication {
 
     public NtlmPasswordAuthentication getAuthToken() {
         return mAuthToken;
+    }
+
+    @Override
+    public String getUrl() {
+        return "smb://mafreebox.freebox.fr/Disque dur/";
+    }
+
+    @Override
+    public String getPhotoPath() {
+        return "Photos/";
     }
 }

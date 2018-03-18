@@ -1,5 +1,7 @@
 package com.rsegismont.nasrolene.back.eventbus.events;
 
+import java.util.List;
+
 import jcifs.smb.SmbFile;
 
 /**
@@ -8,12 +10,12 @@ import jcifs.smb.SmbFile;
 
 public class SmbFileEvent {
 
-    public String url;
-    public SmbFile[] smbFiles;
 
-    public SmbFileEvent(String url,SmbFile[] file){
-        this.url = url;
-        this.smbFiles = file;
+    public List<SmbFile> smbFiles;
+
+    public SmbFileEvent(List<SmbFile> files){
+
+        this.smbFiles = files;
     }
 
 
