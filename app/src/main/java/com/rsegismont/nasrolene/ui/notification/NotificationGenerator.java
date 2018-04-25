@@ -20,7 +20,7 @@ import com.rsegismont.nasrolene.back.application.MonApp;
 public class NotificationGenerator {
 
     public static final int NOTIF_PROGRESS_ID = 1;
-    public static final int NOTIF_RESULT_ID = 2;
+    public static final int NOTIF_RESULT_ID = 3;
 
     public static final String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
 
@@ -28,7 +28,7 @@ public class NotificationGenerator {
     public static void createNotificationChannel(){
         NotificationManager notificationManager =
                 (NotificationManager) MonApp.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-          NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+          NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Mes Notifications", NotificationManager.IMPORTANCE_HIGH);
 
             // Configure the notification channel.
             notificationChannel.setDescription("Channel description");
@@ -51,8 +51,8 @@ public class NotificationGenerator {
         notificationBuilder.setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.drawable.ic_menu_gallery)
-                .setTicker("Hearty365")
+                .setSmallIcon(R.drawable.ic_file_upload_black_24dp)
+                .setTicker("Sauvegarde en cours d'un fichier")
                 //     .setPriority(NotificationGenerator.PRIORITY_MAX)
                 .setContentTitle(fileName)
                 .setSubText("Sauvegarde en cours d'un fichier").
@@ -75,10 +75,11 @@ public class NotificationGenerator {
         notificationBuilder.setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.drawable.ic_menu_gallery)
-                .setTicker("Hearty365")
+                .setSmallIcon(R.drawable.ic_file_download_black_24dp)
+                .setTicker("Fichiers sauvegardées")
+
                 //     .setPriority(NotificationGenerator.PRIORITY_MAX)
-                .setSubText("Fichiers sauvegardées")
+
                 .setContentInfo("Info");
 
         return notificationBuilder;

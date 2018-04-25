@@ -6,12 +6,12 @@ import android.net.Uri;
 import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
 
 import com.rsegismont.nasrolene.back.application.MonApp;
 import com.rsegismont.nasrolene.back.eventbus.BusProvider;
 import com.rsegismont.nasrolene.back.eventbus.events.SmbFileEvent;
 import com.rsegismont.nasrolene.back.smb.SmbAuthentication;
+import com.rsegismont.nasrolene.back.utils.MonOlog;
 import com.rsegismont.nasrolene.back.utils.MonUtils;
 import com.rsegismont.nasrolene.ui.notification.NotificationGenerator;
 
@@ -59,17 +59,28 @@ public class SmbUploadJob extends JobIntentService {
         List<SmbFile> toReturn = new ArrayList<>();
         final String storagePath = SmbAuthentication.getInstance().getUrl()+SmbAuthentication.getInstance().getPhotoPath()+ MonUtils.getCurrentTimeStamp()+"/";
         NotificationCompat.Builder notifEnded = NotificationGenerator.generateEndNotification(notificationManager);
+        String message = "";
+        int result_id = NotificationGenerator.NOTIF_RESULT_ID;
         try {
-            new SmbFile(storagePath, SmbAuthentication.getInstance().getAuthToken()).mkdirs();
+            SmbFile destinationShare = new SmbFile(storagePath, SmbAuthentication.getInstance().getAuthToken());
+            if(!destinationShare.exists()){
+                destinationShare.mkdirs();
+            }
             for(Uri uri : imagesToUpload) {
 
 
 
-                SmbFile file = getfile(notificationManager,uri,storagePath);
+                SmbFile file = uploadFile(notificationManager,uri,storagePath);
                 if(file != null){
                     toReturn.add(file);
+                    message+= file.getName()+"\n";
+                    MonOlog.logDebug(this,"size="+toReturn.size());
+                    notifEnded.setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(message));
                     notifEnded.setContentTitle(toReturn.size()+" fichiers sauvegardés");
-                    notificationManager.notify(NotificationGenerator.NOTIF_RESULT_ID,notifEnded.build());
+                    notificationManager.cancel(result_id);
+                    result_id++;
+                    notificationManager.notify(result_id,notifEnded.build());
 
                 }
             }
@@ -80,10 +91,10 @@ public class SmbUploadJob extends JobIntentService {
         BusProvider.getInstance().post(new SmbFileEvent(toReturn));
     }
 
-    private SmbFile getfile(NotificationManagerCompat notificationManager, Uri uri, String storagePath){
-        Log.e("DEBUG",""+uri);
+    private SmbFile uploadFile(NotificationManagerCompat notificationManager, Uri uri, String storagePath){
+        MonOlog.logDebug(this,""+uri);
         String path = MonUtils.getRealPathFromUri(MonApp.getContext(),uri);
-
+        MonOlog.logDebug(this,""+uri);
 
         File file = new File(path);
         final long fileSize = file.length();
@@ -91,9 +102,16 @@ public class SmbUploadJob extends JobIntentService {
         String url = storagePath+filename;
         NotificationCompat.Builder notif = NotificationGenerator.generateUploadNotification(notificationManager,filename);
 
+
+
         SmbFile smb = null;
         try {
             smb = new SmbFile(url, SmbAuthentication.getInstance().getAuthToken());
+
+            if(smb.exists()){
+                return  null;
+            }
+
             OutputStream sops = smb.getOutputStream();
 
             FileInputStream fis = new FileInputStream(path);
@@ -111,7 +129,6 @@ public class SmbUploadJob extends JobIntentService {
                 int newProgress = (int) (totalBytesWrites*100/fileSize);
                 if(newProgress!=progress){
                     progress=newProgress;
-                    Log.e("DEBUG","send="+totalBytesWrites+" size="+fileSize+" progress ="+progress);
                     notif.setProgress(100, progress,false);
                     notificationManager.notify(NotificationGenerator.NOTIF_PROGRESS_ID,notif.build());
                 }
